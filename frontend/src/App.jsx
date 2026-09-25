@@ -57,12 +57,37 @@ function App() {
     const [schemeFilter, setSchemeFilter] = useState("all");
     const [selectedScheme, setSelectedScheme] = useState(null);
     const [menuOpen, setMenuOpen] = useState(false);
-    const generateGuidance = () => {
+    const generateGuidance = async () => {
     if (!crop || !season || !irrigation || !need) {
   setGuidance("Please complete all four fields before generating guidance.");
   setGuidancePoints([]);
   return;
 }
+
+try {
+  const response = await fetch("http://localhost:5000/api/farm-assessment", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      crop,
+      season,
+      irrigation,
+      need,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to save farm assessment");
+  }
+} catch (error) {
+  console.error("Farm assessment API error:", error);
+  setGuidance("Unable to save your assessment. Please try again.");
+  setGuidancePoints([]);
+  return;
+}
+
 let points = [];
 
 if (need === "crop") {
