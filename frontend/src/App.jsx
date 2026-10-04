@@ -65,7 +65,7 @@ function App() {
 }
 
 try {
-  const response = await fetch("http://localhost:5000/api/farm-assessment", {
+  const response = await fetch("https://agriassist-backend-eoed.onrender.com/api/farm-assessment", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
